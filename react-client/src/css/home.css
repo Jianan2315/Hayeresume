@@ -43,13 +43,15 @@
 
 .features {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-top: 2rem;
     gap: 2rem;
+    flex-wrap: wrap; /* Allow wrapping when there's insufficient space */
 }
 
 .feature {
-    flex: 1;
+    flex: 1 1 28%;
+    max-width: 60%;
     background-color: #f8f9fa;
     padding: 2rem;
     border-radius: 8px;
@@ -65,4 +67,38 @@
 .feature p {
     font-size: 1rem;
     color: #555;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 1rem; /* Reduce padding */
+    }
+
+    .hero-section h1 {
+        font-size: 2rem; /* Smaller font size */
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        font-size: 1rem;
+        padding: 0.6rem 1.5rem; /* Reduce button size */
+    }
+
+    .features {
+        flex-direction: column; /* Stack features vertically */
+    }
+
+    .feature {
+        flex: 1 1 98%; /* Each feature takes full width */
+        max-width: 100%;
+        margin-bottom: 1rem; /* Add spacing between features */
+    }
+
+    .feature:last-child {
+        margin-bottom: 0; /* Remove spacing for the last feature */
+    }
 }
