@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const resumeRoutes = require('./components/resumeRoutes');
+const resumeRoutes = require('./components/resume/resumeRoutes');
 const cors = require('cors');
 const app = express();
 const fs = require('fs');
