@@ -1,16 +1,11 @@
-/*#root {*/
-/*  max-width: 1280px;*/
-/*  margin: 0 auto;*/
-/*  padding: 2rem;*/
-/*  text-align: center;*/
-/*  */
-/*}*/
 #root {
   width: 100%;          /* Ensure #root stretches to full width */
   max-width: none;      /* Remove the max-width constraint */
   margin: 0;            /* Remove auto margin for centering */
-  padding: 2rem;        /* Optional padding for spacing */
   box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 .logo {
   height: 6em;
