@@ -1,13 +1,15 @@
 // src/components/Login.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import '../css/login.css'; // Add CSS for styling
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,8 +21,16 @@ const Login = () => {
             });
             localStorage.setItem('token', response.data.token);
             setMessage('Login successful');
+            setTimeout(() => {
+                navigate('/user');
+            }, 1000);
         } catch (error) {
-            setMessage('Invalid email or password');
+            // Display appropriate error message
+            if (error.response) {
+                setMessage(error.response.data.message || 'An error occurred during login.');
+            } else {
+                setMessage('Invalid email or password');
+            }
         }
     };
 

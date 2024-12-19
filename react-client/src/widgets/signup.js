@@ -9,7 +9,7 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [invitationCode, setInvitationCode] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate(); // Move this outside of handleSubmit
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,7 +24,7 @@ const Signup = () => {
 
             // Redirect on success
             setTimeout(() => {
-                navigate('/user');
+                navigate('/login');
             }, 1000);
         } catch (error) {
             // Display appropriate error message
