@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/signup.css'; // Add CSS for styling
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [invitationCode, setInvitationCode] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate(); // Move this outside of handleSubmit
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,8 +21,18 @@ const Signup = () => {
                 invitationCode,
             });
             setMessage(response.data.message);
+
+            // Redirect on success
+            setTimeout(() => {
+                navigate('/user');
+            }, 1000);
         } catch (error) {
-            setMessage('Error occurred while signing up');
+            // Display appropriate error message
+            if (error.response) {
+                setMessage(error.response.data.message || 'An error occurred during signup.');
+            } else {
+                setMessage('An error occurred while connecting to the server.');
+            }
         }
     };
 

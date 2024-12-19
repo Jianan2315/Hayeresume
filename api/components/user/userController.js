@@ -6,20 +6,26 @@ const PUBLIC_KEY = "ks1t2b83"
 
 exports.createUser = async (req, res) => {
     try {
-        const { email, password, code} = req.body;
+        const { email, password, code } = req.body;
+
         if (!email || !password) {
-                return res.status(400).json({ message: 'Email and password are required.' });
+            return res.status(400).json({ message: 'Email and password are required.' });
         }
+
         const userExists = await User.findOne({ email });
-        if (userExists) return res.status(400).send('User already exists.');
+        if (userExists) {
+            return res.status(400).json({ message: 'This email is already registered. Please use a different email.' });
+        }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const role = code === VALID_INVITE_CODE ? 'admin' : 'user';
         const user = new User({ email, hashedPassword, role });
+
         await user.save();
-        res.status(201).json({ message: 'User created in database successfully.', email: user.email });
+        res.status(201).json({ message: 'User created successfully.', email: user.email });
     } catch (error) {
-        res.status(500).json({ message: 'Create error:', error });
+        console.error('Error creating user:', error);
+        res.status(500).json({ message: 'An unexpected server error occurred. Please try again later.' });
     }
 };
 
