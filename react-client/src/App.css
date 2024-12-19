@@ -1,4 +1,4 @@
-#root {
+cd #root {
   width: 100%;          /* Ensure #root stretches to full width */
   max-width: none;      /* Remove the max-width constraint */
   margin: 0;            /* Remove auto margin for centering */

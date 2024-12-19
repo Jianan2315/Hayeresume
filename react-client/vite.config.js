@@ -18,7 +18,7 @@ export default defineConfig({
     },
     react(),
   ],
-
+  server:{port:3344,},
   optimizeDeps: {
     force: true,
     esbuildOptions: {

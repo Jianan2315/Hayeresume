@@ -2,6 +2,7 @@
 import React from 'react';
 import '../css/home.css';
 import { useNavigate } from 'react-router-dom';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Home = () => {
     const navigate = useNavigate();

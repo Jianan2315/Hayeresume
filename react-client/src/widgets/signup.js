@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/signup.css'; // Add CSS for styling
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/api/signup', {
+            const response = await axios.post(`${BACKEND_URL}/signup`, {
                 email,
                 password,
                 invitationCode,

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/login.css'; // Add CSS for styling
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/api/login', {
+            const response = await axios.post(`${BACKEND_URL}/login`, {
                 email,
                 password,
             });

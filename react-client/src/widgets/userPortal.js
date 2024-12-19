@@ -1,6 +1,7 @@
 // src/components/UserPortal.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const UserPortal = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -8,7 +9,7 @@ const UserPortal = () => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/user', {
+            const response = await axios.get(`${BACKEND_URL}/get/resumes`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUserInfo(response.data);

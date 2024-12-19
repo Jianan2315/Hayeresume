@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const resumeRoutes = require('./components/resume/resumeRoutes');
+const userRoutes = require('./components/user/userRoutes');
 const cors = require('cors');
 const app = express();
 const fs = require('fs');
@@ -14,6 +15,7 @@ app.use(cors({}));
 app.use(express.json({ limit: '10mb' })); // Set the limit to 10MB
 app.use(express.urlencoded({ limit: '10mb', extended: true })); // For URL-encoded data
 app.use('/', resumeRoutes);
+app.use('/', userRoutes);
 
 // Old APIs
 app.get('/resume', (req, res) => {

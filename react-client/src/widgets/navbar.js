@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/navbar.css';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -29,8 +30,8 @@ const Navbar = () => {
                     </>
                 ) : (
                     <>
-                        {userRole === 'user' && <Link to="/user">User Portal</Link>}
-                        {userRole === 'admin' && <Link to="/admin">Admin Portal</Link>}
+                        {userRole === 'user' && <Link to="/userPortal">User Portal</Link>}
+                        {userRole === 'admin' && <Link to="/adminPortal">Admin Portal</Link>}
                         <button className="logout-button" onClick={handleLogout}>
                             Log Out
                         </button>
