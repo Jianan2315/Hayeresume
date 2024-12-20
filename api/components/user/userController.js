@@ -51,7 +51,17 @@ exports.getUsers = async (req, res) => {
         const users = await User.find();
         res.status(200).json({ message: 'Users retrieved successfully', users });
     } catch (error) {
-        res.status(500).json({ message: 'Admin retrieval error:', error });
+        res.status(500).json({ message: 'Users retrieval error:', error });
+    }
+};
+
+exports.getUser = async (req, res) => {
+    try {
+        if (req.user.role) return res.status(403).send('Access denied.');
+        const user = await User.findById(req.user._Id).select('-password');
+        res.status(200).json({ message: 'Personal info retrieved successfully', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Personal info retrieval error:', error });
     }
 };
 

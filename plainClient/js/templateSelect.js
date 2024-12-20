@@ -1,4 +1,3 @@
-// Variables
 const thumbnails = document.querySelectorAll(".thumbnail");
 const overlay = document.getElementById("overlay");
 const enlargedThumbnail = document.getElementById("enlarged-thumbnail");

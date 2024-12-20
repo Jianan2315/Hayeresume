@@ -1,4 +1,3 @@
-// edit.js
 const PORT=3072;
 
 function addCSS(filename) {

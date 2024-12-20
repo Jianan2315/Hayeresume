@@ -1,18 +1,23 @@
-// src/components/UserPortal.js
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const UserPortal = () => {
     const [userInfo, setUserInfo] = useState(null);
+    const [resumes, setResumes] = useState(null);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`${BACKEND_URL}/get/resumes`, {
+            const responseUser = await axios.get(`${BACKEND_URL}/info`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setUserInfo(response.data);
+            const responseResumes = await axios.get(`${BACKEND_URL}/get/resumes`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setUserInfo(responseUser.data.user);
+            setResumes(responseResumes.data);
+            console.log(resumes);
         };
         fetchUserInfo();
     }, []);
