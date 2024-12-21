@@ -57,7 +57,9 @@ exports.getUsers = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     try {
-        if (req.user.role) return res.status(403).send('Access denied.');
+        if (!req.user.role) {
+            return res.status(403).send('Access denied.');
+        }
         const user = await User.findById(req.user._Id).select('-password');
         res.status(200).json({ message: 'Personal info retrieved successfully', user });
     } catch (error) {

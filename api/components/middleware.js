@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const PUBLIC_KEY = "ks1t2b83"
+
 const authenticate = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token){

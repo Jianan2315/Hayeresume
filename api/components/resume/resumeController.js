@@ -15,8 +15,8 @@ exports.createResume = async (req, res) => {
 };
 exports.getResumes = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id)
-        const resumes = await Resume.find({email: user.data.user.email});
+        const user = await User.findById(req.user.userId);
+        const resumes = await Resume.find({email: user.email});
         res.status(200).json({ message: 'Jobs retrieved successfully', resumes });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
