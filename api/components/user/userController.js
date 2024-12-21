@@ -19,7 +19,7 @@ exports.createUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const role = code === VALID_INVITE_CODE ? 'admin' : 'user';
-        const user = new User({ email, hashedPassword, role });
+        const user = new User({ email: email, password:hashedPassword, role: role });
 
         await user.save();
         res.status(201).json({ message: 'User created successfully.', email: user.email });
