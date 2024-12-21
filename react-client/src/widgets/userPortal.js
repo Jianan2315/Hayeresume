@@ -16,8 +16,7 @@ const UserPortal = () => {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUserInfo(responseUser.data.user);
-            setResumes(responseResumes.data);
-            console.log(resumes);
+            setResumes(responseResumes.data.resumes);
         };
         fetchUserInfo();
     }, []);

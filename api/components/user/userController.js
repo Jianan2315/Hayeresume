@@ -60,7 +60,7 @@ exports.getUser = async (req, res) => {
         if (!req.user.role) {
             return res.status(403).send('Access denied.');
         }
-        const user = await User.findById(req.user._Id).select('-password');
+        const user = await User.findById(req.user.userId).select('-password');
         res.status(200).json({ message: 'Personal info retrieved successfully', user });
     } catch (error) {
         res.status(500).json({ message: 'Personal info retrieval error:', error });
@@ -70,7 +70,7 @@ exports.getUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         if (req.user.role !== 'admin') return res.status(403).send('Access denied.');
-        const deleteOperation = await User.findByIdAndDelete(req.user._id);
+        const deleteOperation = await User.findByIdAndDelete(req.user.userId);
         if (!deleteOperation) {
             return res.status(404).json({ message: 'User not found.' }); // If user does not exist
         }
@@ -100,7 +100,7 @@ exports.updatePass = async (req, res) => {
         }
 
         // Find the authenticated user
-        const user = await User.findById(req.user._Id);
+        const user = await User.findById(req.user.userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
