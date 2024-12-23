@@ -22,3 +22,14 @@ exports.getResumes = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+// Test only
+exports.getResumesWithoutAuth = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const resumes = await Resume.find({email}).limit(8);
+        res.status(200).json({ message: 'Jobs retrieved successfully', resumes });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
