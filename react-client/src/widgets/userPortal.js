@@ -7,7 +7,7 @@ const UserPortal = () => {
     const [resumes, setResumes] = useState(null);
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
+        const fetchUserData = async () => {
             const token = localStorage.getItem('token');
             const responseUser = await axios.get(`${BACKEND_URL}/info`, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -18,8 +18,20 @@ const UserPortal = () => {
             setUserInfo(responseUser.data.user);
             setResumes(responseResumes.data.resumes);
         };
-        fetchUserInfo();
+        fetchUserData();
     }, []);
+
+    useEffect(() => {
+        if (userInfo) {
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        }
+    }, [userInfo]);
+
+    useEffect(() => {
+        if (resumes) {
+            localStorage.setItem('resumes', JSON.stringify(resumes));
+        }
+    }, [resumes]);
 
     return (
         <div>
@@ -29,6 +41,11 @@ const UserPortal = () => {
                     <h3>Your Info:</h3>
                     <p>Email: {userInfo.email}</p>
                     <p>Role: {userInfo.role}</p>
+                    <iframe
+                        src="/vanilla-client/profile.html"
+                        style={{width: '100%', height: '100vh', border: 'none'}}
+                        title="Profile"
+                    ></iframe>
                 </div>
             ) : (
                 <p>Loading user information...</p>
