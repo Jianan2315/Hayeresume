@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import '../css/userPortal.css';
 
 const UserPortal = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -38,9 +39,6 @@ const UserPortal = () => {
             <h2>User Portal</h2>
             {userInfo ? (
                 <div>
-                    <h3>Your Info:</h3>
-                    <p>Email: {userInfo.email}</p>
-                    <p>Role: {userInfo.role}</p>
                     <iframe
                         src="/vanilla-client/profile.html"
                         style={{width: '100%', height: '100vh', border: 'none'}}
