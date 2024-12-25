@@ -7,6 +7,8 @@ import Signup from './widgets/signup';
 import UserPortal from './widgets/userPortal';
 import AdminPortal from './widgets/adminPortal';
 import Home from './widgets/home';
+import TemplateSelect from "./widgets/templateSelect";
+import ResumeEditor from "./widgets/resumeEditor";
 import './App.css';
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/user" element={<UserPortal />} />
                     <Route path="/admin" element={<AdminPortal />} />
+                    <Route path="/select" element={<TemplateSelect />} />
+                    <Route path="/edit" element={<ResumeEditor />} />
                     <Route path="*" element={<h1>404 - Page Not Found</h1>} />
                 </Routes>
             </div>

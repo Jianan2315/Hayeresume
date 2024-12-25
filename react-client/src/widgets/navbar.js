@@ -31,6 +31,8 @@ const Navbar = () => {
                 ) : (
                     <>
                         {userRole === 'user' && <Link to="/userPortal">User Portal</Link>}
+                        {userRole === 'user' && <Link to="/templateSelect">Templates</Link>}
+                        {userRole === 'user' && <Link to="/resumeEditor">Editor</Link>}
                         {userRole === 'admin' && <Link to="/adminPortal">Admin Portal</Link>}
                         <button className="logout-button" onClick={handleLogout}>
                             Log Out
