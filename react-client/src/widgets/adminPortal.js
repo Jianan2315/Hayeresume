@@ -4,29 +4,29 @@ import axios from 'axios';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const AdminPortal = () => {
-    const [adminData, setAdminData] = useState(null);
+    const [usersData, setUsersData] = useState(null);
 
     useEffect(() => {
-        const fetchAdminData = async () => {
+        const fetchUsersData = async () => {
             const token = localStorage.getItem('token');
             const response = await axios.get(`${BACKEND_URL}/get/users`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setAdminData(response.data);
+            setUsersData(response.data);
         };
-        fetchAdminData();
+        fetchUsersData();
     }, []);
 
     return (
         <div>
             <h2>Admin Portal</h2>
-            {adminData ? (
+            {usersData ? (
                 <div>
-                    <h3>Admin Data:</h3>
-                    <p>{adminData}</p>
+                    <h3>Users Data:</h3>
+                    <p>{usersData}</p>
                 </div>
             ) : (
-                <p>Loading admin data...</p>
+                <p>Loading users data...</p>
             )}
         </div>
     );

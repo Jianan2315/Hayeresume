@@ -6,7 +6,7 @@ const PUBLIC_KEY = "ks1t2b83"
 
 exports.createUser = async (req, res) => {
     try {
-        const { email, password, code } = req.body;
+        const { email, password, invitationCode } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ message: 'Email and password are required.' });
@@ -18,7 +18,7 @@ exports.createUser = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const role = code === VALID_INVITE_CODE ? 'admin' : 'user';
+        const role = invitationCode === VALID_INVITE_CODE ? 'admin' : 'user';
         const user = new User({ email: email, password:hashedPassword, role: role });
 
         await user.save();
