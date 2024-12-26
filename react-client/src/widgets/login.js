@@ -1,5 +1,5 @@
 // src/components/Login.js
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import '../css/login.css'; // Add CSS for styling
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -21,8 +21,21 @@ const Login = () => {
             });
             localStorage.setItem('token', response.data.token);
             setMessage('Login successful');
+
+            const responseUser = await axios.get(`${BACKEND_URL}/info`, {
+                headers: { Authorization: `Bearer ${response.data.token}` },
+            });
+            const userInfo = responseUser.data.user;
+
             setTimeout(() => {
-                navigate('/user');
+                if (userInfo.role === 'admin') {
+                    navigate('/admin');
+                } else if (userInfo.role === 'user') {
+                    navigate('/user');
+                } else {
+                    setMessage('Invalid account. Please contact admin.');
+                }
+
             }, 1000);
         } catch (error) {
             // Display appropriate error message
