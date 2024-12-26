@@ -23,7 +23,24 @@ const AdminPortal = () => {
             {usersData ? (
                 <div>
                     <h3>Users Data:</h3>
-                    <p>{usersData}</p>
+                    <table border="1" style={{borderCollapse: 'collapse', width: '100%'}}>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {usersData.users.map((user) => (
+                            <tr key={user._id}>
+                                <td>{user._id}</td>
+                                <td>{user.email}</td>
+                                <td>{user.role}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             ) : (
                 <p>Loading users data...</p>
