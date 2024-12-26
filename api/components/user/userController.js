@@ -70,7 +70,8 @@ exports.getUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         if (req.user.role !== 'admin') return res.status(403).send('Access denied.');
-        const deleteOperation = await User.findByIdAndDelete(req.user.userId);
+        const { userId } = req.body;
+        const deleteOperation = await User.findByIdAndDelete(userId);
         if (!deleteOperation) {
             return res.status(404).json({ message: 'User not found.' }); // If user does not exist
         }
