@@ -280,10 +280,11 @@ function populateTemplate1(template, data) {
     );
 
     // 3. Personal Skills Section
-    const skillsHTML = `
-        <li class="component"><strong>Communication language</strong>: ${data.personal_skills.communication_languages}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-        <li class="component"><strong>Programming languages</strong>: ${data.personal_skills.programming_languages.join(', ')}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-        <li class="component"><strong>Certifications</strong>: ${data.personal_skills.certifications.join('; ')}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
+    let skillsHTML = ``;
+    data.personal_skills.forEach(skillArray=>{
+        skillsHTML += `<li class="component"><strong>${skillArray[0]}</strong>: ${skillArray[1]}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
+    });
+
     template = template.replace(
         /<ul>.*?<\/ul>/s,
         `<ul>${skillsHTML}</ul>`
@@ -470,11 +471,12 @@ function extractData() {
 
         // Personal Skills
         const skillSection = document.querySelector('#skill-section');
-        resumeData.personal_skills = {
-            communication_languages: skillSection.querySelectorAll('ul li')[0].innerText.split(': ')[1].trim(),
-            programming_languages: skillSection.querySelectorAll('ul li')[1].innerText.split(': ')[1].trim().split(', '),
-            certifications: skillSection.querySelectorAll('ul li')[2].innerText.split(': ')[1].trim().split('; ')
-        };
+        skillSection.querySelectorAll('ul li').forEach(skill=>{
+            const [name, detail] = splitOnFirstColon(skill.innerText);
+            resumeData.personal_skills[name]=detail;
+        });
+
+
 
         // Professional Experience
         resumeData.professional_experience = [];
@@ -643,4 +645,10 @@ function extractData() {
     }
 
     return resumeData
+}
+
+function splitOnFirstColon(str) {
+    const index = str.indexOf(':');
+    if (index === -1) return [str];  // No colon found
+    return [str.substring(0, index), str.substring(index + 1)];
 }
