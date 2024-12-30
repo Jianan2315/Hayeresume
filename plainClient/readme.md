@@ -19,4 +19,9 @@
    ![Postman Example](postman-example.png)
 4. Additional Information:  
    Once you click the **Download** icon of `edit.html`, the resume JSON will be available for retrieval. 
+
+# Current status:
+1) only fix issue related to first plain template. for engineers, it should be enough. (may fix other templates this if I still work on coding after grad lol)
+2) save button will download a resume pdf that cannot be recognized by some websites/validators
+3) print button just use browser functionality without any issue.
    
