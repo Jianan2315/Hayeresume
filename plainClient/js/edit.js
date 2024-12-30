@@ -281,8 +281,8 @@ function populateTemplate1(template, data) {
 
     // 3. Personal Skills Section
     let skillsHTML = ``;
-    data.personal_skills.forEach(skillArray=>{
-        skillsHTML += `<li class="component"><strong>${skillArray[0]}</strong>: ${skillArray[1]}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
+    Object.entries(data.personal_skills).forEach(([key, value]) => {
+        skillsHTML += `<li class="component"><strong>${key}</strong>: ${value}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
     });
 
     template = template.replace(
@@ -471,6 +471,7 @@ function extractData() {
 
         // Personal Skills
         const skillSection = document.querySelector('#skill-section');
+        resumeData.personal_skills={};
         skillSection.querySelectorAll('ul li').forEach(skill=>{
             const [name, detail] = splitOnFirstColon(skill.innerText);
             resumeData.personal_skills[name]=detail;
