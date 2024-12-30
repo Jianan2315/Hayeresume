@@ -11,7 +11,7 @@
 .template1 header {
   background-color: #ffffff;
   color: black;
-  padding: 15px 0;
+  padding: 1em 0;
   text-align: center;
 }
 .template1 header p {
@@ -33,7 +33,7 @@
 }
 .template1 section {
   width: 90%;
-  margin: 1% 0 0 5%;
+  margin: 1% 0 2% 5%;
 }
 .template1 h2 {
   border-bottom: 2px solid;

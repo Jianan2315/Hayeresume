@@ -24,4 +24,5 @@
 1) only fix issue related to first plain template. for engineers, it should be enough. (may fix other templates this if I still work on coding after grad lol)
 2) save button will download a resume pdf that cannot be recognized by some websites/validators
 3) print button just use browser functionality without any issue.
+4) reload issue for refreshing page: restore to the initial instead of current progress.
    

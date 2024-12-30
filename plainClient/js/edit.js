@@ -47,7 +47,7 @@ window.addEventListener("load", function () {
                 if (params.has('id')) {
                     const id = params.get('id')
                     const resume=JSON.parse(localStorage.getItem(id));
-                    localStorage.removeItem(id);
+                    // localStorage.removeItem(id);
                     htmlcontent = populateTemplate(text, resume, templateId);
                 } else {
                     console.log("Key does not exist.");
@@ -81,7 +81,13 @@ window.addEventListener("load", function () {
                 }
                 // Link update with click
                 popEditForm();
-                // Adjust textarea automatically
+                // uncomment to see pdf preview
+                // for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+                //     if (document.getElementById(e)){
+                //         const element = document.getElementById(e);
+                //         element.style.display="none";
+                //     }
+                // }
             });
         console.log('Script loaded successfully!');
     };
@@ -330,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const resumeData = extractData();
         saveDatabase(resumeData);
         saveLocal(resumeData);
+        location.reload();
     });
 
     printButton.addEventListener("click", ()=>{
