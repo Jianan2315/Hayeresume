@@ -6,7 +6,7 @@ window.addEventListener("load", function () {
     const email = emailParagraph.textContent.split(': ')[1].trim();
 
     const resumes = [];
-    fetch(`http://localhost:${PORT}/test/resumes`, {
+    fetch(`http://localhost:${PORT}/test/get/resumes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -25,4 +25,9 @@
 2) save button will download a resume pdf that cannot be recognized by some websites/validators
 3) print button just use browser functionality without any issue.
 4) reload issue for refreshing page: restore to the initial instead of current progress.
+
+# Scripts behind each button
+1) Save:Save current modification to database and reload page.
+   2) Download: Automatically download a pdf of current modification and redirect to successful download page. No save operation.
+3) Print: Use browser print functionality and reload page. Save current modification to localStorage instead of database.
    
