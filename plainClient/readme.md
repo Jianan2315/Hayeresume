@@ -28,6 +28,9 @@
 
 # Scripts behind each button
 1) Save:Save current modification to database and reload page.
-   2) Download: Automatically download a pdf of current modification and redirect to successful download page. No save operation.
+2) Download: Automatically download a pdf of current modification and redirect to successful download page. No save operation.
 3) Print: Use browser print functionality and reload page. Save current modification to localStorage instead of database.
+
+#  Next steps:
+Since all updates on plain draft have passed tests, I sync react app with those updates.
    
