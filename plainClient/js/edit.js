@@ -27,20 +27,18 @@ window.addEventListener("load", function () {
     const templateId = params.get("template");
     localStorage.setItem('templateId', templateId);
 
-    // Use templateId to load different templates
-    // For simplicity, we'll just display the template ID
-    const preview = document.getElementById("resume-preview");
-    preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
-    preview.classList.add("template"+templateId);
+    let preview = null;
+    if (localStorage.getItem("restore")){
+        console.log("Restore content exists.");
+    } else {
+        preview = document.getElementById("resume-preview");
+        preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
+        preview.classList.add("template"+templateId);
+    }
     addCSS("template"+templateId+".css");
 
-    if (localStorage.getItem("restore")){
-        document.body.innerHTML = localStorage.getItem("restore");
-        localStorage.removeItem("restore");
-    }
     const script = document.createElement('script');
-    // Relative path for edit.html
-    // because here is just configuration.
+    // Relative path for edit.html because here is just configuration.
     // In fact, script is really imported in edit.html.
     script.src = "./js/templates/"+"template"+templateId+".js";
 
@@ -48,6 +46,7 @@ window.addEventListener("load", function () {
         loadTextAsInnerHTML("template"+templateId+".txt")
             .then(text=> {
                 if (!localStorage.getItem("restore")){
+                    localStorage.removeItem("restore");
                     let htmlcontent = text;
                     if (params.has('id')) {
                         const id = params.get('id')
@@ -58,6 +57,8 @@ window.addEventListener("load", function () {
                         console.log("Key does not exist.");
                     }
                     preview.innerHTML = htmlcontent;
+                } else {
+                    console.log("Pass.");
                 }
 
                 // Bind trash icon with delete function
@@ -327,6 +328,9 @@ function populateTemplate1(template, data) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    if (localStorage.getItem("restore")) {
+        document.body.innerHTML = localStorage.getItem("restore");
+    }
     // Get the button and add an event listener
     const icons = document.getElementById("head-icons")
     const downloadButton = icons.querySelector("#download-icon");
@@ -344,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
         try {
             if (params.has('id')) {
                 const id = params.get('id');
-                localStorage.setItem(id, resumeData);
+                localStorage.setItem(id, JSON.stringify(resumeData));
                 await saveDatabase(resumeData, id);
             } else {
                 await saveDatabase(resumeData);
