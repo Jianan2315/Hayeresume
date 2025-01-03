@@ -585,7 +585,7 @@ function updateEduEntry(button, block) {
     const gradDateObj = new Date(gradDate);
     const dateString = gradDateObj.toLocaleString('default', {month: 'short', year: 'numeric' });
 
-    const table = block[0].closest("section").querySelector("table");
+    const table = block[0].closest("section").querySelector("table tbody");
     block.forEach(ele => {
         ele.remove();
         // console.log("ele: ",ele);
@@ -885,7 +885,7 @@ function addEduEntry(button, icon) {
     const gradDateObj = new Date(gradDate);
 
     // 4. Add new row to the table
-    const table = icon.closest("section").querySelector("table");
+    const table = icon.closest("section").querySelector("table tbody");
     const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });//toDateString()
     table.innerHTML += `
         <tr class="component">

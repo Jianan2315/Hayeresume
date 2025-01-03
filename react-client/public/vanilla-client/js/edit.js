@@ -27,11 +27,14 @@ window.addEventListener("load", function () {
     const templateId = params.get("template");
     localStorage.setItem('templateId', templateId);
 
-    // Use templateId to load different templates
-    // For simplicity, we'll just display the template ID
-    const preview = document.getElementById("resume-preview");
-    preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
-    preview.classList.add("template"+templateId);
+    let preview = null;
+    if (localStorage.getItem("restore")){
+        console.log("Restore content exists.");
+    } else {
+        preview = document.getElementById("resume-preview");
+        preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
+        preview.classList.add("template"+templateId);
+    }
     addCSS("template"+templateId+".css");
 
     const script = document.createElement('script');
@@ -43,16 +46,21 @@ window.addEventListener("load", function () {
     script.onload = () => {
         loadTextAsInnerHTML("template"+templateId+".txt")
             .then(text=> {
-                let htmlcontent = text;
-                if (params.has('id')) {
-                    const id = params.get('id')
-                    const resume=JSON.parse(localStorage.getItem(id));
-                    localStorage.removeItem(id);
-                    htmlcontent = populateTemplate(text, resume, templateId);
+                if (!localStorage.getItem("restore")){
+                    localStorage.removeItem("restore");
+                    let htmlcontent = text;
+                    if (params.has('id')) {
+                        const id = params.get('id')
+                        const resume=JSON.parse(localStorage.getItem(id));
+                        // localStorage.removeItem(id);
+                        htmlcontent = populateTemplate(text, resume, templateId);
+                    } else {
+                        console.log("Key does not exist.");
+                    }
+                    preview.innerHTML = htmlcontent;
                 } else {
-                    console.log("Key does not exist.");
+                    console.log("Pass.");
                 }
-                preview.innerHTML = htmlcontent;
 
                 // Bind trash icon with delete function
                 bindEduDelete();
@@ -81,7 +89,14 @@ window.addEventListener("load", function () {
                 }
                 // Link update with click
                 popEditForm();
-                // Adjust textarea automatically
+
+                // uncomment to see pdf preview
+                // for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+                //     if (document.getElementById(e)){
+                //         const element = document.getElementById(e);
+                //         element.style.display="none";
+                //     }
+                // }
             });
         console.log('Script loaded successfully!');
     };
@@ -280,10 +295,11 @@ function populateTemplate1(template, data) {
     );
 
     // 3. Personal Skills Section
-    const skillsHTML = `
-        <li class="component"><strong>Communication language</strong>: ${data.personal_skills.communication_languages}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-        <li class="component"><strong>Programming languages</strong>: ${data.personal_skills.programming_languages.join(', ')}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-        <li class="component"><strong>Certifications</strong>: ${data.personal_skills.certifications.join('; ')}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
+    let skillsHTML = ``;
+    Object.entries(data.personal_skills).forEach(([key, value]) => {
+        skillsHTML += `<li class="component"><strong>${key}</strong>: ${value}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
+    });
+
     template = template.replace(
         /<ul>.*?<\/ul>/s,
         `<ul>${skillsHTML}</ul>`
@@ -314,21 +330,39 @@ function populateTemplate1(template, data) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    if (localStorage.getItem("restore")) {
+        document.body.innerHTML = localStorage.getItem("restore");
+    }
+
     // Get the button and add an event listener
     const icons = document.getElementById("head-icons")
     const downloadButton = icons.querySelector("#download-icon");
     const saveButton = icons.querySelector("#save-icon");
     const printButton = icons.querySelector("#print-icon");
 
-    saveButton.addEventListener("click", ()=>{
+    saveButton.addEventListener("click", async ()=>{
         const header = document.getElementById('personal-info');
         const infoText = header.querySelector('p').textContent;
         const emailMatch = infoText.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
         localStorage.setItem('email', emailMatch[0]);
 
         const resumeData = extractData();
-        saveDatabase(resumeData);
-        saveLocal(resumeData);
+        const params = new URLSearchParams(window.location.search);
+        try {
+            if (params.has('id')) {
+                const id = params.get('id');
+                localStorage.setItem(id, JSON.stringify(resumeData));
+                await saveDatabase(resumeData, id);
+            } else {
+                await saveDatabase(resumeData);
+            }
+            await saveLocal(resumeData);
+            setTimeout(() => {
+                location.reload();
+            }, 800);// 500 sometimes fails.
+        } catch (e){
+            console.log("Save error: ", e);
+        }
     });
 
     printButton.addEventListener("click", ()=>{
@@ -348,7 +382,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         window.print();
         document.body.innerHTML = originalContent; // Restore original content
-        location.reload(); // Reload the page to restore event bindings (optional)
+        localStorage.setItem("restore", originalContent);
+        location.reload(); // Reload the page to restore event bindings
     });
 
     downloadButton.addEventListener("click", () => {
@@ -384,8 +419,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
-function saveDatabase(resumeData) {
+function saveDatabase(resumeData, resumeId=null) {
     for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
         if (document.getElementById(e)){
             const element = document.getElementById(e);
@@ -400,16 +434,28 @@ function saveDatabase(resumeData) {
             const resumeJson = JSON.stringify(resumeData, null, 4);
 
             // Proceed with fetch after setting the thumbnail
-            return fetch(`http://localhost:${PORT}/create/resume`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: `${localStorage.getItem('email')}`,
-                    json: resumeJson,
-                    templateId: `${localStorage.getItem('templateId')}`,
-                    thumbnail: imageData
-                }),
-            });
+            if (!resumeId) {
+                return fetch(`http://localhost:${PORT}/test/create/resume`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: `${localStorage.getItem('email')}`,
+                        json: resumeJson,
+                        templateId: `${localStorage.getItem('templateId')}`,
+                        thumbnail: imageData
+                    }),
+                });
+            } else {
+                return fetch(`http://localhost:${PORT}/test/update/resume`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: resumeId,
+                        json: resumeJson,
+                        thumbnail: imageData
+                    }),
+                });
+            }
         })
         .then(response => {
             if (!response.ok) {
@@ -420,7 +466,6 @@ function saveDatabase(resumeData) {
         .then(data => console.log('Response from /create/resume:\n', data.message))
         .catch(error => console.error('Error:', error));
 }
-
 
 // May remove
 function saveLocal(resumeData){
@@ -439,6 +484,7 @@ function saveLocal(resumeData){
             console.error('Error:', error); // Log errors if any
         });
 }
+
 function extractData() {
     const resumeData = {};
     const params = new URLSearchParams(window.location.search);
@@ -470,11 +516,11 @@ function extractData() {
 
         // Personal Skills
         const skillSection = document.querySelector('#skill-section');
-        resumeData.personal_skills = {
-            communication_languages: skillSection.querySelectorAll('ul li')[0].innerText.split(': ')[1].trim(),
-            programming_languages: skillSection.querySelectorAll('ul li')[1].innerText.split(': ')[1].trim().split(', '),
-            certifications: skillSection.querySelectorAll('ul li')[2].innerText.split(': ')[1].trim().split('; ')
-        };
+        resumeData.personal_skills={};
+        skillSection.querySelectorAll('ul li').forEach(skill=>{
+            const [name, detail] = splitOnFirstColon(skill.innerText);
+            resumeData.personal_skills[name]=detail;
+        });
 
         // Professional Experience
         resumeData.professional_experience = [];
@@ -643,4 +689,10 @@ function extractData() {
     }
 
     return resumeData
+}
+
+function splitOnFirstColon(str) {
+    const index = str.indexOf(':');
+    if (index === -1) return [str];  // No colon found
+    return [str.substring(0, index), str.substring(index + 1)];
 }
