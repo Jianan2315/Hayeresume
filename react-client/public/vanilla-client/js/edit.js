@@ -50,7 +50,7 @@ window.addEventListener("load", function () {
                     localStorage.removeItem("restore");
                     let htmlcontent = text;
                     if (params.has('id')) {
-                        const id = params.get('id')
+                        const id = params.get('id');
                         const resume=JSON.parse(localStorage.getItem(id));
                         // localStorage.removeItem(id);
                         htmlcontent = populateTemplate(text, resume, templateId);
