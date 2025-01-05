@@ -2,9 +2,21 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import '../css/resumeEditor.css';
+import { useLocation } from 'react-router-dom';
 
 const ResumeEditor = () => {
     const [userInfo, setUserInfo] = useState(null);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const templateId = queryParams.get('template');
+    const id = queryParams.get('id');
+
+    useEffect(() => {
+        const iframe = document.querySelector('iframe');
+        if (iframe && templateId && id) {
+            iframe.src = `/vanilla-client/edit.html?template=${templateId}&id=${id}`;
+        }
+    }, [templateId, id]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -29,13 +41,13 @@ const ResumeEditor = () => {
             {userInfo ? (
                 <div>
                     <iframe
-                            src="/vanilla-client/edit.html"
+                        src="/vanilla-client/edit.html?template=${templateId}&id=${id}"
                         style={{width: '100%', height: '100vh', border: 'none'}}
-                        title="Profile"
+                        title="Editor"
                     ></iframe>
                 </div>
             ) : (
-                <p>Loading user information...</p>
+                <p>Please login in first.</p>
             )}
         </div>
     );

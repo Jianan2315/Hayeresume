@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import '../css/userPortal.css';
+import { useNavigate } from 'react-router-dom';
 
 const UserPortal = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -33,6 +34,23 @@ const UserPortal = () => {
             localStorage.setItem('resumes', JSON.stringify(resumes));
         }
     }, [resumes]);
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        const handleMessage = (event) => {
+            if (event.origin !== window.location.origin) return;
+            const { templateId, id } = event.data;
+            if (templateId && id) {
+                // window.location.href = `/edit?template=${templateId}&id=${id}`;
+                navigate(`/edit?template=${templateId}&id=${id}`);
+            }
+        };
+        window.addEventListener('message', handleMessage);
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
+    }, []);
+
 
     return (
         <div>

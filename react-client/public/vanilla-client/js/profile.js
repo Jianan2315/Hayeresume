@@ -36,9 +36,16 @@ window.addEventListener("load", function () {
         const newImage = document.createElement('img');
         newImage.src=thumbnail;
 
+        // newImage.addEventListener('click', function () {
+        //     localStorage.setItem(id, JSON.stringify(resumeData));
+        //     window.location.href = `edit.html?template=${templateId}&id=${id}`;
+        // });
+
         newImage.addEventListener('click', function () {
-            localStorage.setItem(id, JSON.stringify(resumeData));
-            window.location.href = `edit.html?template=${templateId}&id=${id}`;
+            window.parent.postMessage(
+                { templateId, id },
+                window.location.origin
+            );
         });
 
         newThumbnail.appendChild(newImage);
