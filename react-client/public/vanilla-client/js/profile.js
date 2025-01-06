@@ -42,6 +42,7 @@ window.addEventListener("load", function () {
         // });
 
         newImage.addEventListener('click', function () {
+            localStorage.setItem(id, resumeData);
             window.parent.postMessage(
                 { templateId, id },
                 window.location.origin

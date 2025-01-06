@@ -41,7 +41,7 @@ const ResumeEditor = () => {
             {userInfo ? (
                 <div>
                     <iframe
-                        src="/vanilla-client/edit.html?template=${templateId}&id=${id}"
+                        src={`/vanilla-client/edit.html?template=${templateId}&id=${id}`}
                         style={{width: '100%', height: '100vh', border: 'none'}}
                         title="Editor"
                     ></iframe>
