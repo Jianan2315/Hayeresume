@@ -1,31 +1,23 @@
-window.addEventListener("load", function () {
-    const userInfo = localStorage.getItem('userInfo');
-    let user = null;
-    if (userInfo) {
-        user = JSON.parse(userInfo);
-        document.getElementById('user-info').innerHTML = `
-            <p><strong>Email:</strong> ${user.email}</p>
-            <p><strong>Role:</strong> ${user.role}</p>
-            `;
-    } else {
-        document.getElementById('user-info').innerHTML = `<p><strong>Error:</strong> No access to personal information.</p>`;
+window.addEventListener("message", function (event) {
+    if (event.origin !== window.location.origin) return;
+    if (event.data === 'resumesReady') {
+        const resumesString = localStorage.getItem('resumes');
+        if (resumesString) {
+            loadResumes(JSON.parse(resumesString));
+        } else {
+            console.log("Invalid resume data from localStorage.");
+        }
     }
+});
 
-    const resumesString = localStorage.getItem('resumes');
-    let resumes = null;
-    if (resumesString) {
-        resumes = JSON.parse(resumesString);
-    } else {
-        console.error("Invalid configuration for user data.");
-    }
-
+const loadResumes = (resumes) => {
     const resumesContainer = document.querySelector('.resumes');
     const blankThumbnail = document.querySelector('.thumbnail.blank');
     blankThumbnail.addEventListener('click', () => {
         window.location.href = 'templateSelect.html';
     });
 
-    resumes.forEach((resume)=>{
+    resumes.forEach((resume) => {
         const resumeData = resume.json;
         const templateId = resume.templateId;
         const thumbnail = resume.thumbnail;
@@ -34,12 +26,7 @@ window.addEventListener("load", function () {
         const newThumbnail = document.createElement('div');
         newThumbnail.className = 'thumbnail';
         const newImage = document.createElement('img');
-        newImage.src=thumbnail;
-
-        // newImage.addEventListener('click', function () {
-        //     localStorage.setItem(id, JSON.stringify(resumeData));
-        //     window.location.href = `edit.html?template=${templateId}&id=${id}`;
-        // });
+        newImage.src = thumbnail;
 
         newImage.addEventListener('click', function () {
             localStorage.setItem(id, resumeData);
@@ -51,6 +38,5 @@ window.addEventListener("load", function () {
 
         newThumbnail.appendChild(newImage);
         resumesContainer.insertBefore(newThumbnail, blankThumbnail);
-    })
-});
-
+    });
+};

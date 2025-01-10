@@ -22,6 +22,10 @@ const UserPortal = () => {
     useEffect(() => {
         if (resumes) {
             localStorage.setItem('resumes', JSON.stringify(resumes));
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                iframe.contentWindow.postMessage('resumesReady', window.location.origin);
+            }
         }
     }, [resumes]);
 

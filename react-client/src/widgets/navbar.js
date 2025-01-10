@@ -15,6 +15,7 @@ const Navbar = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('userInfo');
+        localStorage.removeItem('resumes');
         navigate('/'); // Redirect to home page
     };
 
