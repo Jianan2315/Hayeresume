@@ -52,3 +52,11 @@
 # How to build and deploy
 1) navigate to `/react-client` and then run `npm run build`. There should be `hayeresume.zip` under path `~/api/`
 2) navigate to `/api` and then run `npm run deployaz`
+
+# MongoDB Config
+- Add database name after HOST:PORT, such as "`hayeresume.mongo.cosmos.azure.com:10255/hayeresume`"
+
+# Issues:
+## 1/10/2025:
+- Async issue between user portal and its iframe:
+  - `userPortal.js` *useEffect()* was executed later than `profile.js` on Azure App service, which led to "**Cannot read properties of null**".
