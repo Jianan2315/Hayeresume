@@ -50,5 +50,5 @@
 
 
 # How to build and deploy
-1) navigate to `/react-client` and then run `npm run build`
+1) navigate to `/react-client` and then run `npm run build`. There should be `hayeresume.zip` under path `~/api/`
 2) navigate to `/api` and then run `npm run deployaz`
