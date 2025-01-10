@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && xcopy dist ..\\api\\public /E /I /Y && cd ../api && zip -r hayeresume.zip . -x \"node_modules/*\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
