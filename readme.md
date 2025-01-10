@@ -47,3 +47,8 @@
 
 # Domain of deployment on Azure
 [Visit Hayeresume](https://hayeresume-gxcxbgb0a2esh8cb.canadacentral-01.azurewebsites.net/)
+
+
+# How to build and deploy
+1) navigate to `/react-client` and then run `npm run build`
+2) navigate to `/api` and then run `npm run deployaz`
