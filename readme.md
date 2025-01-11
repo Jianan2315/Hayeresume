@@ -60,3 +60,5 @@
 ## 1/10/2025:
 - Async issue between user portal and its iframe:
   - `userPortal.js` *useEffect()* was executed later than `profile.js` on Azure App service, which led to "**Cannot read properties of null**".
+- Load twice issue on thumbnails in frame
+- Old build js still exists in express backend /dist (this doesn't matter thus may fix this later)

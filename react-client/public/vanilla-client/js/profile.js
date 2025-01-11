@@ -10,7 +10,17 @@ window.addEventListener("message", function (event) {
     }
 });
 
+window.addEventListener("load", function () {
+    const resumesString = localStorage.getItem('resumes');
+    if (resumesString) {
+        loadResumes(JSON.parse(resumesString));
+    }
+});
+
+let resumesLoaded = false;
 const loadResumes = (resumes) => {
+    if (resumesLoaded) return;
+    resumesLoaded = true;
     const resumesContainer = document.querySelector('.resumes');
     const blankThumbnail = document.querySelector('.thumbnail.blank');
     blankThumbnail.addEventListener('click', () => {
